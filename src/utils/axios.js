@@ -4,7 +4,9 @@ import { Toast } from "zarm";
 
 const MODE = import.meta.env.MODE; // 环境变量
 
-axios.defaults.baseURL = MODE == "development" ? "/api" : "/api";
+axios.defaults.baseURL =
+  MODE == "development" ? "http://127.0.0.1:7001" : "http://127.0.0.1:7001"; // koa-egg插件处理跨域
+// MODE == "development" ? "/api" : "/api"; // 配置代理处理跨域
 axios.defaults.withCredentials = true;
 axios.defaults.headers["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.headers["Authorization"] = `${
