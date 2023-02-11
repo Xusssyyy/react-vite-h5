@@ -1,28 +1,25 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { Cell, Input, Button, Checkbox, Toast } from "zarm";
-import CustomIcon from "@/components/CustomIcon";
-import Captcha from "react-captcha-code";
 import cx from "classnames";
+import Captcha from "react-captcha-code";
+import CustomIcon from "@/components/CustomIcon";
+import { post } from "@/utils";
 
 import s from "./style.module.less";
-import { post } from "../../utils";
 
 const Login = () => {
   const captchaRef = useRef();
-
   const [type, setType] = useState("login"); // 登录注册类型
-  const [username, setUsername] = useState(""); //账号
-  const [password, setPassword] = useState(""); //密码
-  const [verify, setVerify] = useState(""); //验证码
   const [captcha, setCaptcha] = useState(""); // 验证码变化后存储值
+  const [username, setUsername] = useState(""); // 账号
+  const [password, setPassword] = useState(""); // 密码
+  const [verify, setVerify] = useState(""); // 验证码
 
   //  验证码变化，回调方法
   const handleChange = useCallback((captcha) => {
-    console.log("captcha", captcha);
     setCaptcha(captcha);
   }, []);
 
-  // 登录注册方法
   const onSubmit = async () => {
     if (!username) {
       Toast.show("请输入账号");
@@ -32,33 +29,14 @@ const Login = () => {
       Toast.show("请输入密码");
       return;
     }
-    if (!verify) {
-      Toast.show("请输入验证码");
-      return;
-    }
-    if (verify != captcha) {
-      Toast.show("验证码错误");
-      return;
-    }
-    // try {
-    //   const { data } = await post("/api/user/register", {
-    //     username,
-    //     password,
-    //   });
-    //   Toast.show("注册成功");
-    // } catch (error) {
-    //   Toast.show("系统错误");
-    // }
     try {
-      // 判断是否是登录状态
       if (type == "login") {
-        // 执行登录接口，获取 token
         const { data } = await post("/api/user/login", {
           username,
           password,
         });
-        // 将 token 写入 localStorage
         localStorage.setItem("token", data.token);
+        window.location.href = "/";
       } else {
         if (!verify) {
           Toast.show("请输入验证码");
@@ -73,10 +51,9 @@ const Login = () => {
           password,
         });
         Toast.show("注册成功");
-        // 注册成功，自动将 tab 切换到 login 状态
         setType("login");
       }
-    } catch (error) {
+    } catch (err) {
       Toast.show("系统错误");
     }
   };
@@ -84,25 +61,23 @@ const Login = () => {
   useEffect(() => {
     document.title = type == "login" ? "登录" : "注册";
   }, [type]);
-
   return (
     <div className={s.auth}>
       <div className={s.head} />
       <div className={s.tab}>
         <span
-          className={cx({ [s.active]: type == "login" })}
+          className={cx({ [s.avtive]: type == "login" })}
           onClick={() => setType("login")}
         >
           登录
         </span>
         <span
-          className={cx({ [s.active]: type == "register" })}
+          className={cx({ [s.avtive]: type == "register" })}
           onClick={() => setType("register")}
         >
           注册
         </span>
       </div>
-
       <div className={s.form}>
         <Cell icon={<CustomIcon type="zhanghao" />}>
           <Input
@@ -132,7 +107,6 @@ const Login = () => {
           </Cell>
         ) : null}
       </div>
-
       <div className={s.operation}>
         {type == "register" ? (
           <div className={s.agree}>

@@ -4,6 +4,8 @@ export const get = axios.get;
 
 export const post = axios.post;
 
+const MODE = import.meta.env.MODE; // 环境变量
+
 export const typeMap = {
   1: {
     icon: "canyin",
@@ -71,4 +73,16 @@ export const LOAD_STATE = {
   success: 3, // 加载成功
   failure: 4, // 加载失败
   complete: 5, // 加载完成（无新数据）
+};
+
+// 转换图片地址
+export const imgUrlTrans = (url) => {
+  if (url && url.startsWith("http")) {
+    return url;
+  } else {
+    url = `${
+      MODE == "development" ? "http://localhost:7001" : "http://localhost:7001"
+    }${url}`;
+    return url;
+  }
 };
