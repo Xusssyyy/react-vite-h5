@@ -4,8 +4,8 @@ import Data from "@/container/Data";
 import User from "@/container/User";
 import Login from "@/container/Login";
 import Detail from "@/container/Detail";
-// import Account from '@/container/Account'
-// import About from '@/container/About'
+import Account from '@/container/Account'
+import About from '@/container/About'
 import UserInfo from "@/container/UserInfo";
 
 const routes = [
@@ -29,14 +29,14 @@ const routes = [
     path: "/detail",
     component: Detail,
   },
-  // {
-  //   path: "/account",
-  //   component: Account,
-  // },
-  // {
-  //   path: "/about",
-  //   component: About,
-  // },
+  {
+    path: "/account",
+    component: Account,
+  },
+  {
+    path: "/about",
+    component: About,
+  },
   {
     path: "/userinfo",
     component: UserInfo,
